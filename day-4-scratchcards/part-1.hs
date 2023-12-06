@@ -9,6 +9,7 @@ listOfNumbers = do
     <|> do
         number <- nat
         return [number]
+
 gameParser = do
     string "Card"
     space
