@@ -31,7 +31,5 @@ const input = await response.text();
 
 const { parse, part_1, part_2 } = await import(`./${filepath}`);
 
-const parsed_input = parse(input);
-
-console.log(`%c*%c Part 1: %c${part_1(parsed_input)}`, ...STYLE);
-console.log(`%c*%c Part 2: %c${part_2(parsed_input)}`, ...STYLE);
+console.log(`%c*%c Part 1: %c${part_1(parse(input))}`, ...STYLE);
+console.log(`%c*%c Part 2: %c${part_2(parse(input))}`, ...STYLE);

@@ -1,14 +1,7 @@
+import { count } from "../functions.ts";
+
 export function parse(input: string) {
 	return input.split("\n").map((row) => row.split(""));
-}
-
-function count<Type>(
-	array: Type[],
-	callback: (value: Type, index: number) => number,
-) {
-	return array.reduce((accumulator, value, index) => {
-		return callback(value, index) + accumulator;
-	}, 0);
 }
 
 function try_direction(
@@ -83,7 +76,7 @@ function is_x_mas(
 
 export function part_2(input: ReturnType<typeof parse>) {
 	return count(input, (row, row_index) => {
-		return count(row, (_column, column_index) => {
+		return count(row, (_, column_index) => {
 			return is_x_mas(input, row_index, column_index);
 		});
 	});
