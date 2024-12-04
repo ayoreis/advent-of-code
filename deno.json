@@ -1,0 +1,12 @@
+{
+	"fmt": {
+		"proseWrap": "never",
+		"useTabs": true
+	},
+
+	"tasks": {
+		"dev": "deno run --allow-read=. --allow-write=. --allow-env=COOKIE --allow-net=adventofcode.com:443 --env --watch=. mod.ts"
+	},
+
+	"unstable": ["temporal"]
+}
