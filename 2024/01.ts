@@ -27,7 +27,7 @@ export function part_1(
 export function part_2(
 	[left_numbers, right_numbers]: ReturnType<typeof parse>,
 ) {
-	const numbers = new Map();
+	const numbers = new Map<number, number>();
 
 	for (const number of right_numbers) {
 		numbers.set(number, (numbers.get(number) ?? 0) + 1);
