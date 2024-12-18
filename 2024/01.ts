@@ -1,39 +1,60 @@
-import { count, zip } from "../functions.ts";
+// [Historian Hysteria](https://adventofcode.com/2024/day/1)
 
-export function parse(input: string) {
-	const left_numbers = [];
-	const right_numbers = [];
+import { assertEquals } from "@std/assert";
+import { unzip, zip } from "@std/collections";
+import { get_input } from "../library/input.ts";
+import { lines } from "../library/lines.ts";
+import { count } from "../library/array.ts";
 
-	for (const line of input.split("\n").filter(Boolean)) {
-		const [left, right] = line.split("   ");
-		left_numbers.push(Number(left));
-		right_numbers.push(Number(right));
+function parse(input: string) {
+	return unzip(
+		lines(input).map((line) =>
+			line.split("   ").map(Number) as [number, number]
+		),
+	).map((list) => list.toSorted());
+}
+
+function part_1([left, right]: ReturnType<typeof parse>) {
+	return count(zip(left, right), ([left, right]) => Math.abs(left - right));
+}
+
+function part_2([left, right]: ReturnType<typeof parse>) {
+	const occurrences = new Map<number, number>();
+
+	for (const number of right) {
+		occurrences.set(number, (occurrences.get(number) ?? 0) + 1);
 	}
 
-	left_numbers.sort();
-	right_numbers.sort();
-
-	return [left_numbers, right_numbers];
+	return count(left, (number) => number * (occurrences.get(number) ?? 0));
 }
 
-export function part_1(
-	[left_numbers, right_numbers]: ReturnType<typeof parse>,
-) {
-	return count(zip(left_numbers, right_numbers), ([left, right]) => {
-		return Math.abs(left - right);
+const EXAMPLE = `3   4
+4   3
+2   5
+1   3
+3   9
+3   3`;
+
+const input = await get_input(2024, 1);
+
+Deno.test("2024 day 1: Historian Hysteria", async (context) => {
+	await context.step("Part 1", async (context) => {
+		await context.step("Example", () => {
+			assertEquals(part_1(parse(EXAMPLE)), 11);
+		});
+
+		await context.step("Full input", () => {
+			assertEquals(part_1(parse(input)), 1970720);
+		});
 	});
-}
 
-export function part_2(
-	[left_numbers, right_numbers]: ReturnType<typeof parse>,
-) {
-	const numbers = new Map<number, number>();
+	await context.step("Part 2", async (context) => {
+		await context.step("Example", () => {
+			assertEquals(part_2(parse(EXAMPLE)), 31);
+		});
 
-	for (const number of right_numbers) {
-		numbers.set(number, (numbers.get(number) ?? 0) + 1);
-	}
-
-	return count(left_numbers, (number) => {
-		return number * (numbers.get(number) ?? 0);
+		await context.step("Full input", () => {
+			assertEquals(part_2(parse(input)), 17191599);
+		});
 	});
-}
+});
